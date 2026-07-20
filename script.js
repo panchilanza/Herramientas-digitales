@@ -424,7 +424,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   renderCalendar(); renderSlots();
 
-  /* form validation */
+  /* form validation + envío por WhatsApp */
   const form = document.getElementById('visitForm');
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -432,6 +432,9 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     const nombre = document.getElementById('v-nombre');
     const tel = document.getElementById('v-telefono');
     const email = document.getElementById('v-email');
+    const direccion = document.getElementById('v-direccion');
+    const productoSelect = document.getElementById('v-producto');
+    const mensaje = document.getElementById('v-mensaje');
 
     toggleError('f-nombre', nombre.value.trim().length < 3); if(nombre.value.trim().length<3) valid=false;
     const telOk = /^[0-9+\s()-]{7,}$/.test(tel.value.trim());
@@ -445,7 +448,31 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     }
     if(!valid) return;
 
-    showToast(`Visita confirmada para el ${selectedDate.toLocaleDateString('es-UY')} a las ${selectedSlot}. Te contactaremos para confirmar.`);
+    // Arma el mensaje con todos los datos del formulario y lo manda por WhatsApp
+    // al teléfono definido en EMPRESA.telefono (no hay backend: esto abre WhatsApp
+    // con el mensaje ya escrito, y la persona solo tiene que tocar enviar).
+    const tipoLabel = TIPOS_VISITA.find(t=>t.id===activeTipo).label;
+    const productoLabel = productoSelect.options[productoSelect.selectedIndex].text;
+    const fechaTexto = selectedDate.toLocaleDateString('es-UY', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+
+    const lineas = [
+      'Solicitud de visita — Schumacher',
+      `Tipo de visita: ${tipoLabel}`,
+      `Nombre: ${nombre.value.trim()}`,
+      `Teléfono: ${tel.value.trim()}`,
+      `Email: ${email.value.trim()}`
+    ];
+    if(direccion.value.trim()) lineas.push(`Dirección: ${direccion.value.trim()}`);
+    lineas.push(`Producto de interés: ${productoLabel}`);
+    lineas.push(`Fecha solicitada: ${fechaTexto}`);
+    lineas.push(`Horario: ${selectedSlot}`);
+    if(mensaje.value.trim()) lineas.push(`Mensaje: ${mensaje.value.trim()}`);
+
+    const textoWa = encodeURIComponent(lineas.join('\n'));
+    const telefonoWa = EMPRESA.telefono.replace(/[^0-9]/g,'');
+    window.open(`https://wa.me/${telefonoWa}?text=${textoWa}`, '_blank', 'noopener');
+
+    showToast('Te llevamos a WhatsApp con tu solicitud completa: solo tenés que confirmar el envío.');
     form.reset();
     selectedDate = null; selectedSlot = null;
     renderCalendar(); renderSlots();

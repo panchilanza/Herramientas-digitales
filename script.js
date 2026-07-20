@@ -6,7 +6,8 @@
 
 const EMPRESA = {
   nombre:'Schumacher',
-  direccion:'Ruta 39, km 10.5, Maldonado, Uruguay',
+  direccion:'43X4+834, Ruta 39, 20400 Maldonado, Uruguay',
+  telefono:'+598 93 719 334',
   horario:'Lunes a viernes, 9:00 a 17:00 hs',
   mailComercial:'comercial@schumacheraberturas.com',
   contactos:[
@@ -20,7 +21,7 @@ const PROMOS = [
   'Financiación en cuotas para tu proyecto — consultá condiciones con nuestro equipo comercial.',
   'Bonificación en instalación combinando ventanas con pisos o decks en la misma obra.',
   'Fabricación 100% propia con perfilería alemana REHAU, VEKA y GEALAN.',
-  'Visitá nuestra fábrica y showroom en Ruta 39, km 10.5, Maldonado.'
+  'Visitá nuestra fábrica y showroom en Ruta 39, Maldonado.'
 ];
 
 // ESTADÍSTICAS DEL HERO (EJEMPLO — reemplazar por cifras reales de la empresa)
@@ -555,7 +556,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
   });
 })();
 
-/* ---- GALERÍA + LIGHTBOX ---- */
+/* ---- GALERÍA (solo texto, sin fotos) ---- */
 (function(){
   const filtersWrap = document.getElementById('galleryFilters');
   const grid = document.getElementById('galleryGrid');
@@ -576,48 +577,15 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   function renderGrid(){
     grid.innerHTML = '';
-    GALERIA.forEach((g,i)=>{
+    GALERIA.forEach(g=>{
       const hide = activeFilter!=='todos' && g.cat!==activeFilter;
       const item = document.createElement('div');
       item.className = 'gallery-item' + (hide?' hidden':'');
-      item.innerHTML = `<div class="gallery-ph"><span class="gallery-cat-tag">${g.cat}</span><span>${g.titulo}</span></div>`;
-      item.addEventListener('click', ()=>openLightbox(i));
+      item.innerHTML = `<span class="gallery-cat-tag">${g.cat}</span><div class="gallery-title">${g.titulo}</div>`;
       grid.appendChild(item);
     });
   }
   renderGrid();
-
-  const lightbox = document.getElementById('lightboxEl') || (function(){
-    const lb = document.createElement('div');
-    lb.className = 'lightbox';
-    lb.id = 'lightboxEl';
-    lb.innerHTML = `
-      <div class="lightbox-inner">
-        <button class="lightbox-close" aria-label="Cerrar">✕</button>
-        <button class="lightbox-nav lightbox-prev" aria-label="Anterior">‹</button>
-        <div class="gallery-ph" style="aspect-ratio:4/3;border-radius:12px" id="lbImage"></div>
-        <button class="lightbox-nav lightbox-next" aria-label="Siguiente">›</button>
-        <div class="lightbox-caption" id="lbCaption"></div>
-      </div>`;
-    document.body.appendChild(lb);
-    return lb;
-  })();
-  let lbIndex = 0;
-  function openLightbox(i){
-    lbIndex = i;
-    renderLightbox();
-    lightbox.classList.add('open');
-  }
-  function renderLightbox(){
-    const g = GALERIA[lbIndex];
-    document.getElementById('lbImage').innerHTML = `<span class="gallery-cat-tag">${g.cat}</span>`;
-    document.getElementById('lbCaption').textContent = g.titulo;
-  }
-  lightbox.querySelector('.lightbox-close').addEventListener('click', ()=>lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) lightbox.classList.remove('open'); });
-  lightbox.querySelector('.lightbox-prev').addEventListener('click', ()=>{ lbIndex = (lbIndex-1+GALERIA.length)%GALERIA.length; renderLightbox(); });
-  lightbox.querySelector('.lightbox-next').addEventListener('click', ()=>{ lbIndex = (lbIndex+1)%GALERIA.length; renderLightbox(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') lightbox.classList.remove('open'); });
 })();
 
 /* ---- CATÁLOGO ---- */
@@ -681,6 +649,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 (function(){
   const wrap = document.getElementById('contactCards');
   wrap.innerHTML = `
+    <div class="contact-card"><div class="ci">T</div><div><b>Teléfono</b><span>${EMPRESA.telefono}</span></div></div>
     <div class="contact-card"><div class="ci">@</div><div><b>Email comercial</b><span>${EMPRESA.mailComercial}</span></div></div>
     ${EMPRESA.contactos.map(c=>`
       <div class="contact-card"><div class="ci">${c.nombre[0]}</div><div><b>${c.nombre} — ${c.rol}</b><span>${c.tel}</span><span>${c.mail}</span></div></div>

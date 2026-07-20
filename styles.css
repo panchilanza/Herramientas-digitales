@@ -352,21 +352,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;letter-spacing:.01em
 @media(max-width:900px){.loyalty-layout,.tiers-grid,.steps-row,.redeem-grid{grid-template-columns:1fr 1fr}
   .loyalty-layout{grid-template-columns:1fr}}
 
-/* ========================= GALERÍA ========================= */
-.gallery-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.gallery-item{
-  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);
-  padding:22px 24px;transition:border-color .2s ease,transform .2s ease;
-}
-.gallery-item.hidden{display:none}
-.gallery-item:hover{border-color:var(--line-strong);transform:translateY(-3px)}
-.gallery-cat-tag{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--orange-light);background:var(--surface-2);padding:4px 10px;border-radius:999px;letter-spacing:.04em;margin-bottom:12px}
-.gallery-title{font-size:.95rem;font-weight:600;color:var(--text)}
-
-@media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.gallery-grid{grid-template-columns:1fr}}
-
 /* ========================= CATÁLOGO ========================= */
 .catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .catalog-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px}

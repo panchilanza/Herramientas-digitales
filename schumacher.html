@@ -363,21 +363,6 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;letter-spacing:.01em
 @media(max-width:900px){.loyalty-layout,.tiers-grid,.steps-row,.redeem-grid{grid-template-columns:1fr 1fr}
   .loyalty-layout{grid-template-columns:1fr}}
 
-/* ========================= GALERÍA ========================= */
-.gallery-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.gallery-item{
-  border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);
-  padding:22px 24px;transition:border-color .2s ease,transform .2s ease;
-}
-.gallery-item.hidden{display:none}
-.gallery-item:hover{border-color:var(--line-strong);transform:translateY(-3px)}
-.gallery-cat-tag{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--orange-light);background:var(--surface-2);padding:4px 10px;border-radius:999px;letter-spacing:.04em;margin-bottom:12px}
-.gallery-title{font-size:.95rem;font-weight:600;color:var(--text)}
-
-@media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.gallery-grid{grid-template-columns:1fr}}
-
 /* ========================= CATÁLOGO ========================= */
 .catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .catalog-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
@@ -680,19 +665,6 @@ footer{border-top:1px solid var(--line);padding:72px 0 28px;position:relative;z-
   </div>
 </section>
 
-<!-- ============================ GALERÍA ============================ -->
-<section class="section" id="galeria">
-  <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow">Obras</div>
-      <h2>Galería de proyectos</h2>
-      <p>Un vistazo a los sistemas que trabajamos. Filtrá por tipo de producto.</p>
-    </div>
-    <div class="gallery-filters" id="galleryFilters"></div>
-    <div class="gallery-grid" id="galleryGrid"></div>
-  </div>
-</section>
-
 <!-- ============================ CATÁLOGO ============================ -->
 <section class="section section-alt" id="catalogo">
   <div class="container">
@@ -986,19 +958,6 @@ const PASOS_FIDELIDAD = [
   'Canjeás beneficios en tu próxima cotización o compra.'
 ];
 const CANJES = ['5% off en tu próxima compra','Instalación bonificada','Kit de mantenimiento de cortesía','Visita técnica prioritaria'];
-
-// GALERÍA (placeholders visuales — reemplazar por fotos reales de obras)
-const GALERIA = [
-  {cat:'ventanas', titulo:'Ventana corrediza PVC — Línea Slim'},
-  {cat:'ventanas', titulo:'Ventana oscilobatiente — Línea Kompakt'},
-  {cat:'ventanas', titulo:'Paño fijo con DVH'},
-  {cat:'ventanas', titulo:'Fachada con perfil de aluminio A30'},
-  {cat:'pisos', titulo:'Piso ingenieril — Línea Resistente'},
-  {cat:'pisos', titulo:'Piso símil madera — Línea Natural'},
-  {cat:'decks', titulo:'Deck WPC — Línea Premium'},
-  {cat:'decks', titulo:'Deck perimetral de piscina'}
-];
-const FILTROS_GALERIA = [{id:'todos',label:'Todos'},{id:'ventanas',label:'Ventanas'},{id:'pisos',label:'Pisos'},{id:'decks',label:'Decks'}];
 
 // CATÁLOGO TÉCNICO
 const CATALOGO = {
@@ -1472,39 +1431,6 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     d.textContent = c;
     redeemGrid.appendChild(d);
   });
-})();
-
-/* ---- GALERÍA (solo texto, sin fotos) ---- */
-(function(){
-  const filtersWrap = document.getElementById('galleryFilters');
-  const grid = document.getElementById('galleryGrid');
-  let activeFilter = 'todos';
-
-  FILTROS_GALERIA.forEach(f=>{
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'tab-btn' + (f.id==='todos'?' active':'');
-    b.textContent = f.label;
-    b.addEventListener('click', ()=>{
-      activeFilter = f.id;
-      [...filtersWrap.children].forEach(c=>c.classList.remove('active'));
-      b.classList.add('active');
-      renderGrid();
-    });
-    filtersWrap.appendChild(b);
-  });
-
-  function renderGrid(){
-    grid.innerHTML = '';
-    GALERIA.forEach(g=>{
-      const hide = activeFilter!=='todos' && g.cat!==activeFilter;
-      const item = document.createElement('div');
-      item.className = 'gallery-item' + (hide?' hidden':'');
-      item.innerHTML = `<span class="gallery-cat-tag">${g.cat}</span><div class="gallery-title">${g.titulo}</div>`;
-      grid.appendChild(item);
-    });
-  }
-  renderGrid();
 })();
 
 /* ---- CATÁLOGO ---- */

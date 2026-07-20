@@ -127,19 +127,6 @@ const PASOS_FIDELIDAD = [
 ];
 const CANJES = ['5% off en tu próxima compra','Instalación bonificada','Kit de mantenimiento de cortesía','Visita técnica prioritaria'];
 
-// GALERÍA (placeholders visuales — reemplazar por fotos reales de obras)
-const GALERIA = [
-  {cat:'ventanas', titulo:'Ventana corrediza PVC — Línea Slim'},
-  {cat:'ventanas', titulo:'Ventana oscilobatiente — Línea Kompakt'},
-  {cat:'ventanas', titulo:'Paño fijo con DVH'},
-  {cat:'ventanas', titulo:'Fachada con perfil de aluminio A30'},
-  {cat:'pisos', titulo:'Piso ingenieril — Línea Resistente'},
-  {cat:'pisos', titulo:'Piso símil madera — Línea Natural'},
-  {cat:'decks', titulo:'Deck WPC — Línea Premium'},
-  {cat:'decks', titulo:'Deck perimetral de piscina'}
-];
-const FILTROS_GALERIA = [{id:'todos',label:'Todos'},{id:'ventanas',label:'Ventanas'},{id:'pisos',label:'Pisos'},{id:'decks',label:'Decks'}];
-
 // CATÁLOGO TÉCNICO
 const CATALOGO = {
   pvc:[
@@ -612,39 +599,6 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     d.textContent = c;
     redeemGrid.appendChild(d);
   });
-})();
-
-/* ---- GALERÍA (solo texto, sin fotos) ---- */
-(function(){
-  const filtersWrap = document.getElementById('galleryFilters');
-  const grid = document.getElementById('galleryGrid');
-  let activeFilter = 'todos';
-
-  FILTROS_GALERIA.forEach(f=>{
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'tab-btn' + (f.id==='todos'?' active':'');
-    b.textContent = f.label;
-    b.addEventListener('click', ()=>{
-      activeFilter = f.id;
-      [...filtersWrap.children].forEach(c=>c.classList.remove('active'));
-      b.classList.add('active');
-      renderGrid();
-    });
-    filtersWrap.appendChild(b);
-  });
-
-  function renderGrid(){
-    grid.innerHTML = '';
-    GALERIA.forEach(g=>{
-      const hide = activeFilter!=='todos' && g.cat!==activeFilter;
-      const item = document.createElement('div');
-      item.className = 'gallery-item' + (hide?' hidden':'');
-      item.innerHTML = `<span class="gallery-cat-tag">${g.cat}</span><div class="gallery-title">${g.titulo}</div>`;
-      grid.appendChild(item);
-    });
-  }
-  renderGrid();
 })();
 
 /* ---- CATÁLOGO ---- */

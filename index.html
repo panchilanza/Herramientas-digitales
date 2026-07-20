@@ -28,7 +28,7 @@
     </ul>
     <div class="nav-cta">
       <a href="#visita" class="btn btn-primary btn-sm">Solicitar cotización</a>
-      <button class="nav-burger" id="navBurger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <button type="button" class="nav-burger" id="navBurger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
@@ -96,9 +96,9 @@
     <div class="booking-layout">
       <div class="calendar-box reveal">
         <div class="cal-head">
-          <button class="cal-nav-btn" id="calPrev" aria-label="Mes anterior">‹</button>
+          <button type="button" class="cal-nav-btn" id="calPrev" aria-label="Mes anterior">‹</button>
           <div class="month-label" id="calMonthLabel"></div>
-          <button class="cal-nav-btn" id="calNext" aria-label="Mes siguiente">›</button>
+          <button type="button" class="cal-nav-btn" id="calNext" aria-label="Mes siguiente">›</button>
         </div>
         <div class="cal-grid" id="calDow"></div>
         <div class="cal-grid" id="calGrid"></div>
@@ -164,7 +164,7 @@
     </div>
     <div class="plan-toggle reveal">
       <span class="toggle-label active" id="lblMensual">Mensual</span>
-      <button class="switch" id="planSwitch" aria-label="Cambiar a facturación anual"><span class="knob"></span></button>
+      <button type="button" class="switch" id="planSwitch" aria-label="Cambiar a facturación anual"><span class="knob"></span></button>
       <span class="toggle-label" id="lblAnual">Anual</span>
       <span class="save-pill">Ahorrás 20% pagando anual</span>
     </div>
@@ -303,8 +303,9 @@
           <textarea id="c-mensaje" name="mensaje"></textarea>
           <span class="error-msg">Contanos brevemente en qué te podemos ayudar.</span>
         </div>
-        <p class="tyc-note">Al enviar, aceptás nuestros <button type="button" id="openTyc2">Términos y Condiciones</button>.</p>
-        <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+        <p class="tyc-note">Al enviar, aceptás nuestros <button type="button" id="openTyc2">Términos y Condiciones</button>. Vas a confirmar la consulta por WhatsApp.</p>
+        <button type="submit" class="btn btn-primary btn-block">Enviar por WhatsApp</button>
+        <a href="#" id="waFallbackContact" target="_blank" rel="noopener" class="btn btn-secondary btn-block" style="display:none;margin-top:10px">Si no se abrió, tocá acá para ir a WhatsApp</a>
       </form>
     </div>
   </div>
@@ -319,7 +320,7 @@
         <a href="#inicio" class="footer-logo"><img src="logo.png" alt="Schumacher"></a>
         <p class="tag">Aberturas de PVC y aluminio, pisos y decks. Fabricación propia con perfilería alemana en Maldonado, Uruguay.</p>
         <div class="footer-social">
-          <a href="https://wa.me/59899203543" target="_blank" rel="noopener" aria-label="WhatsApp">W</a>
+          <a href="https://wa.me/59893719334" target="_blank" rel="noopener" aria-label="WhatsApp">W</a>
           <a href="#" aria-label="Instagram">IG</a>
         </div>
       </div>
@@ -363,7 +364,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <h3>Términos y condiciones</h3>
-      <button class="modal-close" id="closeTyc" aria-label="Cerrar">✕</button>
+      <button type="button" class="modal-close" id="closeTyc" aria-label="Cerrar">✕</button>
     </div>
     <div class="modal-body">
       <h4>1. Cotizaciones</h4>

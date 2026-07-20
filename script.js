@@ -234,6 +234,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     s.textContent = p;
     track.appendChild(s);
     const d = document.createElement('button');
+    d.type = 'button';
     d.className = i===0 ? 'active' : '';
     d.addEventListener('click', ()=>goTo(i));
     dots.appendChild(d);
@@ -276,6 +277,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   keys.forEach(k=>{
     const b = document.createElement('button');
+    b.type = 'button';
     b.className = 'tab-btn' + (k===activeCat?' active':'');
     b.textContent = SERVICIOS[k].label;
     b.addEventListener('click', ()=>{
@@ -294,6 +296,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     pickerWrap.innerHTML = '';
     SERVICIOS[activeCat].lineas.forEach(l=>{
       const b = document.createElement('button');
+      b.type = 'button';
       b.className = 'line-option' + (l.id===activeLinea?' active':'');
       b.innerHTML = `<div class="name">${l.nombre}</div><div class="price-mini">Desde USD ${l.precio}/m²</div>`;
       b.addEventListener('click', ()=>{ activeLinea = l.id; renderPicker(); renderCard(); });
@@ -336,6 +339,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
   let activeTipo = TIPOS_VISITA[0].id;
   TIPOS_VISITA.forEach(t=>{
     const b = document.createElement('button');
+    b.type = 'button';
     b.className = 'tab-btn' + (t.id===activeTipo?' active':'');
     b.textContent = t.label;
     b.addEventListener('click', ()=>{
@@ -534,8 +538,15 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
         <div class="plan-price">USD ${precioMostrado}<span> / mes</span></div>
         <div class="plan-save">${anual ? `Facturado anual · ahorrás USD ${ahorro} al año` : '&nbsp;'}</div>
         <ul>${p.beneficios.map(b=>`<li>${b}</li>`).join('')}</ul>
-        <a href="#contacto" class="btn ${p.recomendado?'btn-primary':'btn-secondary'} btn-block">Elegir plan</a>
+        <button type="button" data-plan="${p.nombre}" class="btn ${p.recomendado?'btn-primary':'btn-secondary'} btn-block">Elegir plan ${p.nombre}</button>
       `;
+      card.querySelector('button[data-plan]').addEventListener('click', ()=>{
+        const modalidad = anual ? 'anual' : 'mensual';
+        const mensajeField = document.getElementById('c-mensaje');
+        mensajeField.value = `Me interesa el plan ${p.nombre} (USD ${precioMostrado}/mes, facturación ${modalidad}). Quisiera más información.`;
+        document.getElementById('contacto').scrollIntoView({behavior:'smooth'});
+        mensajeField.focus();
+      });
       grid.appendChild(card);
     });
   }
@@ -611,6 +622,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   FILTROS_GALERIA.forEach(f=>{
     const b = document.createElement('button');
+    b.type = 'button';
     b.className = 'tab-btn' + (f.id==='todos'?' active':'');
     b.textContent = f.label;
     b.addEventListener('click', ()=>{
@@ -645,6 +657,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   keys.forEach(k=>{
     const b = document.createElement('button');
+    b.type = 'button';
     b.className = 'tab-btn' + (k===active?' active':'');
     b.textContent = labels[k];
     b.addEventListener('click', ()=>{
@@ -705,6 +718,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
   `;
 
   const form = document.getElementById('contactForm');
+  const waFallbackContact = document.getElementById('waFallbackContact');
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
     let valid = true;
@@ -722,7 +736,25 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     checks.forEach(([id,err])=>{ document.getElementById(id).classList.toggle('error', err); if(err) valid=false; });
     if(!valid) return;
 
-    showToast('Gracias por contactarnos, te responderemos a la brevedad.');
+    // Igual que en Visita: sin backend, así que abrimos WhatsApp con el mensaje
+    // ya armado al teléfono general de EMPRESA.telefono.
+    const lineas = [
+      'Consulta desde la web — Schumacher',
+      `Nombre: ${nombre.value.trim()} ${apellido.value.trim()}`,
+      `Email: ${email.value.trim()}`,
+      `Mensaje: ${mensaje.value.trim()}`
+    ];
+    const textoWa = encodeURIComponent(lineas.join('\n'));
+    const telefonoWa = EMPRESA.telefono.replace(/[^0-9]/g,'');
+    const waUrl = `https://wa.me/${telefonoWa}?text=${textoWa}`;
+
+    const link = document.createElement('a');
+    link.href = waUrl; link.target = '_blank'; link.rel = 'noopener';
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    waFallbackContact.href = waUrl;
+    waFallbackContact.style.display = 'flex';
+
+    showToast('Te llevamos a WhatsApp con tu consulta lista: solo tenés que confirmar el envío.');
     form.reset();
   });
 })();

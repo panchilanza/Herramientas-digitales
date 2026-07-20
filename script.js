@@ -426,6 +426,23 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   /* form validation + envío por WhatsApp */
   const form = document.getElementById('visitForm');
+  const waFallback = document.getElementById('waFallback');
+  const calendarBox = document.querySelector('.calendar-box');
+
+  function openWhatsApp(url){
+    // Técnica de <a> + click: más confiable contra bloqueadores de pop-ups que window.open()
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    // Fallback visible por si el navegador igual bloqueó la apertura
+    waFallback.href = url;
+    waFallback.style.display = 'flex';
+  }
+
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
     let valid = true;
@@ -443,7 +460,10 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
     toggleError('f-email', !emailOk); if(!emailOk) valid=false;
 
     if(!selectedDate || !selectedSlot){
-      showToast('Elegí una fecha y un horario para tu visita.', 'error');
+      showToast('Te falta elegir fecha y horario arriba, en el calendario.', 'error');
+      calendarBox.classList.add('attention');
+      calendarBox.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=>calendarBox.classList.remove('attention'), 2200);
       valid = false;
     }
     if(!valid) return;
@@ -470,7 +490,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
     const textoWa = encodeURIComponent(lineas.join('\n'));
     const telefonoWa = EMPRESA.telefono.replace(/[^0-9]/g,'');
-    window.open(`https://wa.me/${telefonoWa}?text=${textoWa}`, '_blank', 'noopener');
+    openWhatsApp(`https://wa.me/${telefonoWa}?text=${textoWa}`);
 
     showToast('Te llevamos a WhatsApp con tu solicitud completa: solo tenés que confirmar el envío.');
     form.reset();
